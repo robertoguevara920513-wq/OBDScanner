@@ -1,67 +1,61 @@
-<!doctype html>
-<html lang="es">
-<head>
+<!doctype html><html lang="es"><head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="theme-color" content="#080b10"><title>OBD SCANNER PRO</title>
+<title>OBD SCANNER PRO V3.1</title>
 <style>
-:root{--bg:#070a0f;--card:#111720;--line:#26313e;--txt:#f4f7fa;--muted:#8d9aaa;--accent:#16a1ff;--ok:#27df72;--warn:#ffd43b;--danger:#ff3b4f}
-*{box-sizing:border-box}body{margin:0;background:radial-gradient(circle at 50% -10%,#16202c 0,#070a0f 48%);color:var(--txt);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;padding:env(safe-area-inset-top) 12px env(safe-area-inset-bottom);min-height:100vh}
-header{display:flex;justify-content:space-between;align-items:center;padding:12px 4px 8px;position:sticky;top:0;background:rgba(7,10,15,.9);backdrop-filter:blur(12px);z-index:3}.brand{font-size:21px;font-weight:900;letter-spacing:.5px}.brand span{color:var(--accent)}
-.pill{font-size:11px;font-weight:800;padding:7px 10px;border-radius:99px;background:#18212c;border:1px solid var(--line);color:var(--muted)}.pill.ok{color:var(--ok);border-color:#1e7044}
-.card{background:linear-gradient(145deg,#131a23,#0d131a);border:1px solid var(--line);border-radius:24px;padding:15px;margin:10px 0;box-shadow:0 10px 30px rgba(0,0,0,.18)}
-.actions{display:grid;grid-template-columns:1.5fr 1fr 1fr;gap:8px}.btn{border:1px solid var(--line);border-radius:15px;padding:12px 8px;background:#18212c;color:#eaf1f8;font-weight:850;font-size:14px}.btn.primary{background:var(--accent);border-color:var(--accent);color:#fff}.btn.active{box-shadow:0 0 0 2px rgba(22,161,255,.2) inset;background:#123d5b}.btn:active{transform:scale(.98)}
-.gaugeWrap{position:relative;max-width:390px;margin:auto}.gauge{width:100%;display:block}.gaugeNum{position:absolute;left:0;right:0;top:51%;text-align:center;font-size:52px;font-weight:950;letter-spacing:-2px}.gaugeUnit{position:absolute;left:0;right:0;top:70%;text-align:center;color:var(--muted);font-size:13px;font-weight:800}.rpmMeta{display:flex;justify-content:space-between;color:var(--muted);font-size:12px;margin-top:-8px}.bar{height:9px;background:#202832;border-radius:9px;overflow:hidden;margin-top:7px}.bar i{display:block;height:100%;width:0;background:var(--ok);transition:width .1s linear}
-.sectionTitle{font-size:13px;color:var(--muted);font-weight:850;text-transform:uppercase;letter-spacing:1px;margin-bottom:10px}.grid{display:grid;grid-template-columns:1fr 1fr;gap:9px}.tile{background:#0a0f15;border:1px solid #202a35;border-radius:17px;padding:12px;min-height:86px}.tile .name{font-size:12px;color:var(--muted)}.tile .value{font-size:27px;font-weight:900;margin-top:4px}.tile .unit{font-size:11px;color:#718092}.tile.live{border-color:#24445c}
-.selectGrid{display:grid;grid-template-columns:1fr 1fr;gap:8px}.sel{padding:11px;border-radius:14px;border:1px solid var(--line);background:#0b1118;color:#aeb9c5;font-weight:800}.sel.on{background:#10354e;border-color:#167fc0;color:#fff}.sel.rpm.on{border-color:#2adf72;background:#103c28}
-.status{font-size:12px;color:var(--muted);line-height:1.6}.status b{color:#e8eef5}.tools{display:grid;grid-template-columns:1fr 1fr;gap:8px}.setting{display:flex;align-items:center;justify-content:space-between;padding:11px 12px;background:#0b1118;border:1px solid var(--line);border-radius:14px;font-size:13px}.setting input{accent-color:var(--accent);transform:scale(1.2)}input[type=number]{width:74px;background:#121a23;color:#fff;border:1px solid var(--line);border-radius:9px;padding:7px;text-align:center;font-weight:800}
-canvas{width:100%;height:105px;background:#080d13;border-radius:15px;border:1px solid #1d2732}.log{background:#05070a;border-radius:15px;padding:11px;white-space:pre-wrap;word-break:break-word;font:11px ui-monospace,SFMono-Regular,Menlo,monospace;color:#91a0ae;max-height:190px;overflow:auto}.hidden{display:none}@media(min-width:700px){main{max-width:720px;margin:auto}.grid{grid-template-columns:repeat(4,1fr)}.selectGrid{grid-template-columns:repeat(4,1fr)}}
-</style>
-</head><body>
-<header><div class="brand">OBD <span>SCANNER PRO</span></div><div id="blePill" class="pill">BLE OFF</div></header>
-<main>
-<div class="card"><div class="actions"><button id="connect" class="btn primary">CONECTAR</button><button id="live" class="btn">LIVE</button><button id="stop" class="btn">STOP</button></div><div id="statusLine" class="status" style="margin-top:9px">BLE: desconectado</div></div>
-
+*{box-sizing:border-box}body{margin:0;background:#090c10;color:#f3f5f7;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;padding:18px}
+h1{text-align:center;color:#1489ee;font-size:30px}.card{background:#171c24;border:1px solid #283241;border-radius:28px;padding:20px;margin:16px 0}
+button{width:100%;border:0;border-radius:20px;padding:18px;margin:8px 0;background:#eef0f3;color:#087fe5;font-weight:800;font-size:20px}
+.value{text-align:center;font-size:52px;font-weight:800;margin:14px 0}.small{color:#aeb7c3}.ok{color:#55e08a}.bad{color:#ff6878}
+.log{background:#05070a;border-radius:20px;padding:18px;white-space:pre-wrap;word-break:break-word;font-family:ui-monospace,monospace;font-size:15px;min-height:180px}
+</style></head><body>
+<h1>OBD SCANNER PRO</h1>
 <div class="card">
-<div class="sectionTitle">Tacómetro</div>
-<div class="gaugeWrap"><svg class="gauge" viewBox="0 0 400 250" aria-label="Tacómetro"><path d="M55 210 A145 145 0 0 1 345 210" fill="none" stroke="#202a34" stroke-width="24" stroke-linecap="round"/><path id="arcG" d="M55 210 A145 145 0 0 1 220 68" fill="none" stroke="#27df72" stroke-width="24" stroke-linecap="round"/><path id="arcY" d="M220 68 A145 145 0 0 1 292 85" fill="none" stroke="#ffd43b" stroke-width="24" stroke-linecap="round"/><path id="arcR" d="M292 85 A145 145 0 0 1 345 210" fill="none" stroke="#ff3b4f" stroke-width="24" stroke-linecap="round"/><g id="ticks"></g><line id="needle" x1="200" y1="210" x2="200" y2="76" stroke="#fff" stroke-width="4" stroke-linecap="round"/><circle cx="200" cy="210" r="10" fill="#fff"/><circle cx="200" cy="210" r="4" fill="#0b1017"/></svg><div id="rpm" class="gaugeNum">—</div><div class="gaugeUnit">RPM</div></div>
-<div class="rpmMeta"><span>0</span><span>1k</span><span>2k</span><span>3k</span><span>4k</span><span>5k</span><span>6k</span><span>7k</span></div><div class="bar"><i id="rpmBar"></i></div><div id="rpmMeta2" class="status" style="text-align:center;margin-top:7px">Esperando datos...</div>
+<button id="connect">CONECTAR ESP32</button><button id="ping">PING</button>
+<button id="status">STATUS</button><button id="reconnect">RECONEXIÓN TCP</button>
 </div>
-
-<div class="card"><div class="sectionTitle">Datos ECU</div><div class="grid">
-<div id="tSpeed" class="tile"><div class="name">VELOCIDAD</div><div id="speed" class="value">—</div><div class="unit">km/h</div></div>
-<div id="tCool" class="tile"><div class="name">REFRIGERANTE</div><div id="coolant" class="value">—</div><div class="unit">°C</div></div>
-<div id="tTps" class="tile"><div class="name">TPS</div><div id="tps" class="value">—</div><div class="unit">%</div></div>
-<div id="tLoad" class="tile"><div class="name">CARGA MOTOR</div><div id="load" class="value">—</div><div class="unit">%</div></div>
-<div id="tMap" class="tile"><div class="name">MAP</div><div id="map" class="value">—</div><div class="unit">kPa</div></div>
-<div id="tVolt" class="tile"><div class="name">VOLTAJE ECU</div><div id="voltage" class="value">—</div><div class="unit">V</div></div>
-<div id="tAdv" class="tile"><div class="name">AVANCE</div><div id="advance" class="value">—</div><div class="unit">°</div></div>
-<div id="tTcp" class="tile"><div class="name">ELM327 / TCP</div><div id="tcp" class="value">—</div><div class="unit">estado</div></div>
-</div></div>
-
-<div class="card"><div class="sectionTitle">Parámetros activos</div><div class="selectGrid">
-<button class="sel rpm on" data-p="RPM">RPM</button><button class="sel" data-p="SPEED">VELOCIDAD</button><button class="sel" data-p="COOLANT">TEMP.</button><button class="sel" data-p="TPS">TPS</button><button class="sel" data-p="LOAD">CARGA</button><button class="sel" data-p="MAP">MAP</button><button class="sel" data-p="VOLTAGE">VOLTAJE</button><button class="sel" data-p="ADVANCE">AVANCE</button>
-</div><div class="status" style="margin-top:9px">RPM tiene prioridad para mantener el tacómetro rápido. Los demás PIDs se consultan uno por uno.</div></div>
-
-<div class="card"><div class="sectionTitle">Gráfica RPM</div><canvas id="chart" width="700" height="210"></canvas></div>
-
-<div class="card"><div class="sectionTitle">Configuración</div><div class="setting"><span>Alarma de RPM</span><input id="alarmOn" type="checkbox"></div><div class="setting" style="margin-top:7px"><span>Límite</span><input id="alarmRpm" type="number" min="500" max="7000" step="100" value="5000"></div><div class="setting" style="margin-top:7px"><span>Mantener pantalla activa</span><input id="wake" type="checkbox"></div><div class="tools" style="margin-top:9px"><button id="testrpm" class="btn">TEST RPM</button><button id="status" class="btn">STATUS</button><button id="reconnect" class="btn">RECONEXIÓN</button><button id="ati" class="btn">ATI</button><button id="fullscreen" class="btn">PANTALLA COMPLETA</button></div></div>
-
-<div class="card"><div class="sectionTitle">Registro</div><div id="log" class="log">Listo.</div></div>
-</main>
+<div class="card">
+<button id="ati">PROBAR ATI</button><button id="at1">PROBAR AT@1</button>
+<button id="rawrpm">PROBAR RPM (010C)</button><button id="test">TESTRPM</button>
+</div>
+<div class="card"><div>Último RPM válido</div><div id="rpm" class="value">—</div>
+<div id="info" class="small">Esperando prueba...</div></div>
+<div class="card"><b style="font-size:22px">Registro</b><div id="log" class="log">Listo.</div></div>
 <script>
-const NAME="OBD-SCANNER-PRO",SERVICE="6e400001-b5a3-f393-e0a9-e50e24dcca9e",RX="6e400002-b5a3-f393-e0a9-e50e24dcca9e",TX="6e400003-b5a3-f393-e0a9-e50e24dcca9e";
-let rx=null,tx=null,device=null,selected=new Set(["RPM"]),live=false,wakeLock=null,lastRPM=0,history=[],alarmActive=false;
-const $=id=>document.getElementById(id); function log(s){$('log').textContent+=($('log').textContent?'\n':'')+s;$('log').scrollTop=$('log').scrollHeight} function set(id,v){$(id).textContent=v}
-function send(s){if(!rx){log('❌ BLE no conectado');return false}rx.writeValue(new TextEncoder().encode(s));return true}
-function params(){return 'PARAMS:'+Array.from(selected).join(',')} function updateParams(){if(send(params()))log('iPhone → '+params())}
-function polar(v){const a=Math.PI+(Math.PI*(v/7000));return {x:200+134*Math.cos(a),y:210+134*Math.sin(a)}}
-function gauge(r){r=Math.max(0,Math.min(7000,r));const p=polar(r);$('needle').setAttribute('x2',p.x);$('needle').setAttribute('y2',p.y);$('rpmBar').style.width=(r/7000*100)+'%';set('rpm',Math.round(r).toLocaleString('es-EC'));set('rpmMeta2',`${r.toFixed(0)} RPM · respuesta ECU`);}
-function drawChart(){const c=$('chart'),x=c.getContext('2d'),w=c.width,h=c.height;x.clearRect(0,0,w,h);x.strokeStyle='#202a34';x.lineWidth=1;for(let i=1;i<5;i++){x.beginPath();x.moveTo(0,i*h/5);x.lineTo(w,i*h/5);x.stroke()}if(history.length<2)return;x.strokeStyle='#16a1ff';x.lineWidth=3;x.beginPath();history.forEach((v,i)=>{const px=i/(history.length-1)*w,py=h-(v/7000)*h;i?x.lineTo(px,py):x.moveTo(px,py)});x.stroke()}
-function alarm(r){const on=$('alarmOn').checked,limit=+$('alarmRpm').value||5000;if(on&&r>=limit&&!alarmActive){alarmActive=true;beep()}if(r<limit-100)alarmActive=false}function beep(){try{const C=window.AudioContext||window.webkitAudioContext,ctx=new C(),o=ctx.createOscillator(),g=ctx.createGain();o.frequency.value=880;o.connect(g);g.connect(ctx.destination);g.gain.value=.08;o.start();o.stop(ctx.currentTime+.18)}catch(e){}}
-function handle(e){const s=new TextDecoder().decode(e.target.value);log('ESP32 → '+s);try{const j=JSON.parse(s);if(j.type==='live'&&!j.ok){set('rpmMeta2',`RPM ERROR · TCP ${j.connected?'OK':'OFF'} · ${j.raw||''}`)}if(j.type==='live'&&j.ok){if(j.p==='RPM'){lastRPM=j.v;gauge(j.v);history.push(j.v);if(history.length>80)history.shift();drawChart();alarm(j.v)}else if(j.p==='SPEED')set('speed',Math.round(j.v));else if(j.p==='COOLANT')set('coolant',j.v.toFixed(1));else if(j.p==='TPS')set('tps',j.v.toFixed(1));else if(j.p==='LOAD')set('load',j.v.toFixed(1));else if(j.p==='MAP')set('map',j.v.toFixed(0));else if(j.p==='VOLTAGE')set('voltage',j.v.toFixed(2));else if(j.p==='ADVANCE')set('advance',j.v.toFixed(1))}if(j.type==='status'){set('tcp',j.elmTCP?'OK':'OFF');$('statusLine').innerHTML=`BLE: <b>conectado</b> · Wi‑Fi: <b>${j.wifi?'OK':'OFF'}</b> · TCP: <b>${j.elmTCP?'OK':'OFF'}</b> · RSSI: <b>${j.rssi} dBm</b>`;$('blePill').textContent='BLE ON';$('blePill').classList.add('ok')}if(j.type==='live_state'){live=j.on;$('live').classList.toggle('primary',live)}}catch(_){}}
-async function connect(){log('Buscando '+NAME+'...');try{device=await navigator.bluetooth.requestDevice({filters:[{name:NAME}],optionalServices:[SERVICE]});log('Encontrado: '+device.name);device.addEventListener('gattserverdisconnected',()=>{rx=tx=null;live=false;$('statusLine').textContent='BLE: desconectado';$('blePill').textContent='BLE OFF';$('blePill').classList.remove('ok');log('BLE desconectado')});const server=await device.gatt.connect(),service=await server.getPrimaryService(SERVICE);rx=await service.getCharacteristic(RX);tx=await service.getCharacteristic(TX);await tx.startNotifications();tx.addEventListener('characteristicvaluechanged',handle);$('statusLine').textContent='BLE: conectado';$('blePill').textContent='BLE ON';$('blePill').classList.add('ok');log('BLE listo.');updateParams();send('STATUS')}catch(e){log('❌ '+e)}}
-$('testrpm').onclick=()=>{if(send('TESTRPM'))log('iPhone → TESTRPM')};$('connect').onclick=connect;$('live').onclick=()=>{if(send('LIVE:ON')){live=true;log('iPhone → LIVE:ON')}};$('stop').onclick=()=>{if(send('LIVE:OFF')){live=false;log('iPhone → LIVE:OFF')}};$('status').onclick=()=>{if(send('STATUS'))log('iPhone → STATUS')};$('reconnect').onclick=()=>{if(send('RECONNECT'))log('iPhone → RECONNECT')};$('ati').onclick=()=>{if(send('ATI'))log('iPhone → ATI')};$('fullscreen').onclick=()=>document.documentElement.requestFullscreen?.();
-document.querySelectorAll('.sel').forEach(b=>b.onclick=()=>{const p=b.dataset.p;if(selected.has(p)){if(p==='RPM'&&selected.size===1)return;selected.delete(p);b.classList.remove('on')}else{selected.add(p);b.classList.add('on')}updateParams()});
-$('wake').onchange=async e=>{if(e.target.checked){try{wakeLock=await navigator.wakeLock?.request('screen');log('Pantalla activa')}catch(err){log('⚠️ Wake Lock no disponible')}}else{wakeLock?.release();wakeLock=null}};document.addEventListener('visibilitychange',async()=>{if(document.visibilityState==='visible'&&$('wake').checked)try{wakeLock=await navigator.wakeLock?.request('screen')}catch(e){}});
-if(!navigator.bluetooth)log('⚠️ Usa Safari + beacio.');gauge(0);drawChart();
+const N="OBD-SCANNER-PRO",S="6e400001-b5a3-f393-e0a9-e50e24dcca9e",
+R="6e400002-b5a3-f393-e0a9-e50e24dcca9e",T="6e400003-b5a3-f393-e0a9-e50e24dcca9e";
+let rx=null,tx=null;
+function log(s){let e=document.getElementById("log");e.textContent+=(e.textContent?"\n":"")+s;e.scrollTop=e.scrollHeight}
+function send(s){if(!rx){log("❌ BLE no conectado");return}rx.writeValue(new TextEncoder().encode(s));log("iPhone → "+s)}
+function msg(e){
+ let s=new TextDecoder().decode(e.target.value);log("ESP32 → "+s);
+ try{let j=JSON.parse(s);
+  if(j.type==="rpm_test"&&j.ok){document.getElementById("rpm").textContent=Math.round(j.rpm)+" RPM";
+   document.getElementById("info").textContent="A="+j.A.toString(16).padStart(2,"0").toUpperCase()+"  B="+j.B.toString(16).padStart(2,"0").toUpperCase()+" · "+j.totalMs+" ms";
+   document.getElementById("info").className="small ok"}
+  if(j.type==="elm"&&j.cmd==="010C"){
+   let m=j.raw.match(/41\s+0C\s+([0-9A-Fa-f]{2})\s+([0-9A-Fa-f]{2})/);
+   if(m){let a=parseInt(m[1],16),b=parseInt(m[2],16),v=((a*256)+b)/4;
+    document.getElementById("rpm").textContent=Math.round(v)+" RPM";
+    document.getElementById("info").textContent="Respuesta directa · "+j.totalMs+" ms";
+    document.getElementById("info").className="small ok"}
+  }
+ }catch(_){}
+}
+async function connect(){
+ log("Buscando "+N+"...");
+ try{let d=await navigator.bluetooth.requestDevice({filters:[{name:N}],optionalServices:[S]});
+ log("Encontrado: "+d.name);d.addEventListener("gattserverdisconnected",()=>{log("BLE desconectado");rx=tx=null});
+ let g=await d.gatt.connect(),svc=await g.getPrimaryService(S);rx=await svc.getCharacteristic(R);tx=await svc.getCharacteristic(T);
+ await tx.startNotifications();tx.addEventListener("characteristicvaluechanged",msg);log("BLE listo.")
+ }catch(e){log("❌ "+e)}
+}
+document.getElementById("connect").onclick=connect;
+document.getElementById("ping").onclick=()=>send("PING");
+document.getElementById("status").onclick=()=>send("STATUS");
+document.getElementById("reconnect").onclick=()=>send("RECONNECT");
+document.getElementById("ati").onclick=()=>send("ATI");
+document.getElementById("at1").onclick=()=>send("AT@1");
+document.getElementById("rawrpm").onclick=()=>send("010C");
+document.getElementById("test").onclick=()=>send("TESTRPM");
+if(!navigator.bluetooth)log("⚠️ Usa Safari + beacio.");
 </script></body></html>
