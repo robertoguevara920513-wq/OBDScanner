@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>OBD Scanner PRO - BLE Test</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;background:#0e1116;color:#fff;font-family:Arial,sans-serif}
+main{max-width:560px;margin:auto;padding:24px}
+h1{text-align:center;font-size:27px;margin:10px 0 6px}
+.sub{text-align:center;color:#8d96a5;margin-bottom:24px}
+.card{background:#181d25;border:1px solid #2a303b;border-radius:18px;padding:20px;margin-bottom:16px}
+.status{font-size:20px;text-align:center;padding:15px;border-radius:12px;background:#242a34}
+button{width:100%;padding:16px;border:0;border-radius:12px;font-size:17px;font-weight:bold;margin-top:10px}
+#connect{background:#22c55e;color:#061008}
+#ping{background:#3b82f6;color:white}
+button:disabled{opacity:.4}
+pre{white-space:pre-wrap;word-break:break-word;background:#0a0d12;border-radius:12px;padding:15px;min-height:130px;color:#d8dee9}
+.ok{color:#55ff99}
+.err{color:#ff7272}
+</style>
+</head>
+<body>
+<main>
+<h1>OBD SCANNER PRO</h1>
+<div class="sub">PRUEBA BLUETOOTH BLE V1</div>
+
+<div class="card">
+  <div id="status" class="status">🔵 ESPERANDO ESP32</div>
+  <button id="connect">CONECTAR ESP32</button>
+  <button id="ping" disabled>ENVIAR PING</button>
+</div>
+
+<div class="card">
+  <strong>Registro</strong>
+  <pre id="log"></pre>
+</div>
+</main>
+
+<script>
+const SERVICE_UUID = "6e400001-b5a3-f393-e0a9-e50e24dcca9e";
+const RX_UUID = "6e400002-b5a3-f393-e0a9-e50e24dcca9e";
+const TX_UUID = "6e400003-b5a3-f393-e0a9-e50e24dcca9e";
+
+let device = null;
+let rx = null;
+let tx = null;
+
+const statusEl = document.getElementById("status");
+const logEl = document.getElementById("log");
+const connectBtn = document.getElementById("connect");
+const pingBtn = document.getElementById("ping");
+
+function log(text){
+  logEl.textContent += text + "\n";
+  logEl.scrollTop = logEl.scrollHeight;
+}
+
+function setStatus(text, cls=""){
+  statusEl.textContent = text;
+  statusEl.className = "status " + cls;
+}
+
+function decoder(data){
+  return new TextDecoder().decode(data);
+}
+
+async function connectBLE(){
+  try{
+    if (!("bluetooth" in navigator)){
+      throw new Error("navigator.bluetooth no está disponible. Verifica que beacio esté activo en Safari.");
+    }
+
+    log("Solicitando dispositivo Bluetooth...");
+    setStatus("🔎 BUSCANDO ESP32...");
+
+    device = await navigator.bluetooth.requestDevice({
+      filters: [{ services: [SERVICE_UUID] }],
+      optionalServices: [SERVICE_UUID]
+    });
+
+    log("Dispositivo: " + (device.name || "sin nombre"));
+
+    device.addEventListener("gattserverdisconnected", disconnected);
+
+    const server = await device.gatt.connect();
+    log("GATT conectado.");
+
+    const service = await server.getPrimaryService(SERVICE_UUID);
+    rx = await service.getCharacteristic(RX_UUID);
+    tx = await service.getCharacteristic(TX_UUID);
+
+    await tx.startNotifications();
+    tx.addEventListener("characteristicvaluechanged", event => {
+      const msg = decoder(event.target.value);
+      log("ESP32 → " + msg);
+    });
+
+    setStatus("🟢 ESP32 CONECTADO", "ok");
+    pingBtn.disabled = false;
+    connectBtn.textContent = "CONECTADO";
+    log("BLE listo.");
+  }
+  catch(e){
+    console.error(e);
+    setStatus("🔴 ERROR DE CONEXIÓN", "err");
+    log("ERROR: " + e.message);
+  }
+}
+
+function disconnected(){
+  setStatus("🔵 ESP32 DESCONECTADO");
+  pingBtn.disabled = true;
+  log("ESP32 desconectado.");
+}
+
+async function send(text){
+  if(!rx) return;
+  const data = new TextEncoder().encode(text);
+  await rx.writeValue(data);
+  log("iPhone → " + text);
+}
+
+connectBtn.addEventListener("click", connectBLE);
+pingBtn.addEventListener("click", () => send("PING"));
+</script>
+</body>
+</html>
