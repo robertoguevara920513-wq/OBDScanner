@@ -21,7 +21,7 @@ body{margin:0;background:radial-gradient(circle at 50% -10%,#172233 0,#070b11 42
 </head>
 <body>
 <div class="wrap">
-<header class="top"><div><div class="brand">OBD <span>SCANNER PRO</span></div><div class="sub">V4.2 · KWP FAST · Dashboard basado en V4.1 estable</div></div><div id="blePill" class="pill bad">BLE OFF</div></header>
+<header class="top"><div><div class="brand">OBD <span>SCANNER PRO</span></div><div class="sub">V4.2.1 · KWP FAST · Dashboard basado en V4.1 estable</div></div><div id="blePill" class="pill bad">BLE OFF</div></header>
 
 <section class="card"><div class="actions">
 <button class="btn primary" id="connect">CONECTAR ESP32</button><button class="btn primary" id="live">INICIAR LIVE</button><button class="btn" id="stop">DETENER</button><button class="btn" id="fullscreen">PANTALLA COMPLETA</button>
@@ -69,7 +69,7 @@ body{margin:0;background:radial-gradient(circle at 50% -10%,#172233 0,#070b11 42
 <section class="card"><div class="sectionTitle">Configuración</div><div class="configGrid"><div class="config"><div class="switchRow"><label for="alarm">Alarma de RPM</label><input id="alarm" class="switch" type="checkbox"></div></div><div class="config"><label for="limit">Límite de RPM</label><input id="limit" type="number" min="500" max="9000" step="100" value="5000"></div><div class="config"><div class="switchRow"><label for="wake">Mantener pantalla activa</label><input id="wake" class="switch" type="checkbox"></div></div><div class="config"><div class="switchRow"><label>Frecuencia gráfica</label><b>hasta 120 muestras</b></div></div></div></section>
 
 <section class="card"><div class="sectionTitle">Registro</div><div id="log" class="log">Listo.</div></section>
-<div class="footer">OBD SCANNER PRO · núcleo de comunicación V4.1 congelado</div>
+<div class="footer">OBD SCANNER PRO · núcleo V4.1 + recuperación de conexión robusta</div>
 </div>
 <script>
 const NAME="OBD-SCANNER-PRO",SERVICE="6e400001-b5a3-f393-e0a9-e50e24dcca9e",RX="6e400002-b5a3-f393-e0a9-e50e24dcca9e",TX="6e400003-b5a3-f393-e0a9-e50e24dcca9e";
